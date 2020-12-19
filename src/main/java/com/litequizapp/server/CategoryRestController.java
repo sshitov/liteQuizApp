@@ -43,4 +43,11 @@ public class CategoryRestController {
 
   }
 
+  @PostMapping("/delete")
+  public void deleteCategoryByIdRequest(@RequestBody String id) {
+    long Id = Long.parseLong(id);
+    restService.deleteCategory(Id);
+
+  }
+
 }

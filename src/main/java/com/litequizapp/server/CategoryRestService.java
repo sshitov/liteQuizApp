@@ -42,4 +42,9 @@ public class CategoryRestService {
     categoryRepository.save(new CategoryEntity(title));
   }
 
+  public void deleteCategory(long id) {
+    categoryRepository.deleteById(id);
+
+  }
+
 }
