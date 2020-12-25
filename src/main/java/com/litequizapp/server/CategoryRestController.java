@@ -1,10 +1,14 @@
 package com.litequizapp.server;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,34 +24,37 @@ public class CategoryRestController {
     this.restService = restService;
   }
 
-  @GetMapping("/all")
-  public ResponseEntity getAllCategories() {
+  @GetMapping
+  public ResponseEntity<List<String>> getAllCategories() {
     return ResponseEntity.ok(restService.getAllCategory());
   }
 
-  @GetMapping("/id/{id}")
-  public ResponseEntity getCategoryByIdRequest(@PathVariable String id) {
-    long Id = Long.parseLong(id);
-    return ResponseEntity.ok(restService.getCategoryById(Id));
+  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> getCategoryByIdRequest(@PathVariable String id) {
+    long categoryId = Long.parseLong(id);
+    return ResponseEntity.ok(restService.getCategoryById(categoryId));
   }
 
-  @GetMapping("/title/{title}")
-  public ResponseEntity getCategoryByTitleRequest(@PathVariable String title) {
-    return ResponseEntity.ok(restService.getCategoryByTitle(title));
 
-  }
-
-  @PostMapping("/create")
+  @PutMapping
   public void createCategoryRequest(@RequestBody String title) {
     restService.createCategory(title);
 
   }
 
-  @PostMapping("/delete")
-  public void deleteCategoryByIdRequest(@RequestBody String id) {
-    long Id = Long.parseLong(id);
-    restService.deleteCategory(Id);
+  @PostMapping(value = "/{id}")
+  public void updateCategoryRequest(@PathVariable String id, @RequestBody String title) {
+    long categoryId = Long.parseLong(id);
+    restService.updateCategory(categoryId, title);
 
   }
+
+  @DeleteMapping
+  public void deleteCategoryByIdRequest(@RequestBody String id) {
+    long categoryId = Long.parseLong(id);
+    restService.deleteCategory(categoryId);
+
+  }
+
 
 }
