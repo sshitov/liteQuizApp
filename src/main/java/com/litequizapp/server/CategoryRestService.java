@@ -23,12 +23,6 @@ public class CategoryRestService {
 
   }
 
-  public String getCategoryByTitle(String title) {
-    List<CategoryEntity> categories = categoryRepository.findByTitle(title);
-    return categories.toString();
-
-  }
-
   public List<String> getAllCategory() {
     List<String> categories = new ArrayList<>();
     for (CategoryEntity category : categoryRepository.findAll()) {
@@ -40,6 +34,12 @@ public class CategoryRestService {
 
   public void createCategory(String title) {
     categoryRepository.save(new CategoryEntity(title));
+  }
+
+  public void updateCategory(long id, String title) {
+    CategoryEntity category = categoryRepository.findById(id);
+    category.setTitle(title);
+    categoryRepository.save(category);
   }
 
   public void deleteCategory(long id) {

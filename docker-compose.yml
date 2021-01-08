@@ -6,7 +6,6 @@ services:
     container_name: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data/
-      - ./src/main/resources/database/initDB.sql:/docker-entrypoint-initdb.d/initDB.sql
     ports:
       - 5432:5432
     environment:
