@@ -1,4 +1,4 @@
-package com.litequizapp.server;
+package com.litequizapp.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

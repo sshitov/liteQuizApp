@@ -1,8 +1,8 @@
-package com.litequizapp.server;
+package com.litequizapp.controller;
 
+import com.litequizapp.service.CategoryRestService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,12 +29,11 @@ public class CategoryRestController {
     return ResponseEntity.ok(restService.getAllCategory());
   }
 
-  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/{id}")
   public ResponseEntity<String> getCategoryByIdRequest(@PathVariable String id) {
     long categoryId = Long.parseLong(id);
     return ResponseEntity.ok(restService.getCategoryById(categoryId));
   }
-
 
   @PutMapping
   public void createCategoryRequest(@RequestBody String title) {
