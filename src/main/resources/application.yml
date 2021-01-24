@@ -11,3 +11,6 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     hibernate:
       ddl-auto: none
+server:
+  error:
+    include-message: always

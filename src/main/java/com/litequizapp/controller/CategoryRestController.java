@@ -1,5 +1,6 @@
-package com.litequizapp.server;
+package com.litequizapp.controller;
 
+import com.litequizapp.service.CategoryRestService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,7 +27,7 @@ public class CategoryRestController {
 
   @GetMapping
   public ResponseEntity<List<String>> getAllCategories() {
-    return ResponseEntity.ok(restService.getAllCategory());
+    return ResponseEntity.ok(restService.getAllCategories());
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

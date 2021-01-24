@@ -1,10 +1,10 @@
 databaseChangeLog:
   -  changeSet:
-       id:  1
+       id:  2
        author:  SSergei
        changes:
          -  createTable:
-              tableName: categories
+              tableName: questions
               columns:
                 -  column:
                      name:  id
@@ -19,6 +19,6 @@ databaseChangeLog:
                      constraints:
                        nullable: false
          - createSequence:
-             sequenceName: category_sequence
+             sequenceName: question_sequence
              startValue: 1
              incrementBy: 1

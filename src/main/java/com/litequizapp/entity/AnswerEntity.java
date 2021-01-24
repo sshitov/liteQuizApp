@@ -1,20 +1,24 @@
-package com.litequizapp.server;
+package com.litequizapp.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "categories")
-public class CategoryEntity {
+@Table(name = "answers")
+public class AnswerEntity {
 
   @Id
-  @GeneratedValue(strategy=GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE,
+      generator = "answer_seq")
+  @SequenceGenerator(name = "answer_seq",
+      sequenceName = "answer_sequence", allocationSize = 1)
   @Column(name = "id")
   @Getter
   private Long id;
@@ -24,16 +28,16 @@ public class CategoryEntity {
   @Setter
   private String title;
 
-  protected CategoryEntity() {
+  protected AnswerEntity() {
   }
 
-  public CategoryEntity(String title) {
+  public AnswerEntity(String title) {
     this.title = title;
   }
 
   @Override
   public String toString() {
-    return String.format("Category[id='%d', title='%s']", id, title);
+    return String.format("Answer[id='%d', title='%s']", id, title);
   }
 
 }
