@@ -1,8 +1,7 @@
 package com.litequizapp;
 
-import com.litequizapp.server.CategoryEntity;
-import com.litequizapp.server.CategoryRepository;
-import com.litequizapp.server.LiteQuizApplication;
+import com.litequizapp.entity.CategoryEntity;
+import com.litequizapp.repository.CategoryRepository;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,10 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = LiteQuizApplication.class)
-public class LiteQuizApplicationTests {
+@SpringBootTest(classes = Application.class)
+public class ApplicationTests {
 
-  private static final Logger log = LoggerFactory.getLogger(LiteQuizApplicationTests.class);
+  private static final Logger log = LoggerFactory.getLogger(ApplicationTests.class);
 
   @Autowired
   private CategoryRepository categoryRepository;

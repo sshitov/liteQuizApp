@@ -1,13 +1,13 @@
-package com.litequizapp.server;
+package com.litequizapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LiteQuizApplication {
+public class Application {
 
   public static void main(String[] args) {
-    SpringApplication.run(LiteQuizApplication.class, args);
+    SpringApplication.run(Application.class, args);
   }
 
 }
