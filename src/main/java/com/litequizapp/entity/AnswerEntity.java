@@ -8,8 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "answers")
 public class AnswerEntity {
@@ -26,14 +31,14 @@ public class AnswerEntity {
   @Column(name = "title")
   @Getter
   @Setter
+  @NonNull
   private String title;
 
-  protected AnswerEntity() {
-  }
+  @Column(name = "is_right")
+  @Getter
+  @Setter
+  private Boolean isRight;
 
-  public AnswerEntity(String title) {
-    this.title = title;
-  }
 
   @Override
   public String toString() {

@@ -18,6 +18,11 @@ databaseChangeLog:
                      type: varchar(150)
                      constraints:
                        nullable: false
+                - column:
+                    name: is_right
+                    type: boolean
+                    constraints:
+                      nullable: true
          - createSequence:
              sequenceName: answer_sequence
              startValue: 1
