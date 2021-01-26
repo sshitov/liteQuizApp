@@ -16,14 +16,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-@Table(name = "categories")
-public class CategoryEntity {
+@Table(name = "answers")
+public class AnswerEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE,
-      generator = "category_seq")
-  @SequenceGenerator(name = "category_seq",
-      sequenceName = "category_sequence", allocationSize = 1)
+      generator = "answer_seq")
+  @SequenceGenerator(name = "answer_seq",
+      sequenceName = "answer_sequence", allocationSize = 1)
   @Column(name = "id")
   @Getter
   private Long id;
@@ -34,10 +34,15 @@ public class CategoryEntity {
   @NonNull
   private String title;
 
+  @Column(name = "is_right")
+  @Getter
+  @Setter
+  private Boolean isRight;
+
 
   @Override
   public String toString() {
-    return String.format("Category[id='%d', title='%s']", id, title);
+    return String.format("Answer[id='%d', title='%s']", id, title);
   }
 
 }

@@ -29,7 +29,7 @@ public class CategoryRestService {
 
   }
 
-  public List<String> getAllCategory() {
+  public List<String> getAllCategories() {
     List<String> categories = new ArrayList<>();
     for (CategoryEntity category : categoryRepository.findAll()) {
       categories.add(category.toString());

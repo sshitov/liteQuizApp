@@ -26,7 +26,7 @@ public class CategoryRestController {
 
   @GetMapping
   public ResponseEntity<List<String>> getAllCategories() {
-    return ResponseEntity.ok(restService.getAllCategory());
+    return ResponseEntity.ok(restService.getAllCategories());
   }
 
   @GetMapping(value = "/{id}")
@@ -40,6 +40,7 @@ public class CategoryRestController {
     restService.createCategory(title);
 
   }
+
 
   @PostMapping(value = "/{id}")
   public void updateCategoryRequest(@PathVariable String id, @RequestBody String title) {
