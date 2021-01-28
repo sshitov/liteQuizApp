@@ -1,5 +1,6 @@
 package com.litequizapp.controller;
 
+import com.litequizapp.entity.QuestionEntity;
 import com.litequizapp.service.QuestionRestService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,26 +26,25 @@ public class QuestionRestController {
   }
 
   @GetMapping
-  public ResponseEntity<List<String>> getAllQuestions() {
+  public ResponseEntity<List<QuestionEntity>> getAllQuestions() {
     return ResponseEntity.ok(restService.getAllQuestions());
   }
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<String> getQuestionByIdRequest(@PathVariable String id) {
+  public ResponseEntity<QuestionEntity> getQuestionByIdRequest(@PathVariable String id) {
     long questionId = Long.parseLong(id);
     return ResponseEntity.ok(restService.getQuestionById(questionId));
   }
 
   @PutMapping
-  public void createQuestionRequest(@RequestBody String title) {
-    restService.createQuestion(title);
-
+  public QuestionEntity createCategoryRequest(@RequestBody QuestionEntity title) {
+    return restService.createQuestion(title);
   }
 
   @PostMapping(value = "/{id}")
-  public void updateQuestionRequest(@PathVariable String id, @RequestBody String title) {
+  public QuestionEntity updateCategoryRequest(@PathVariable String id, @RequestBody QuestionEntity title) {
     long questionId = Long.parseLong(id);
-    restService.updateQuestion(questionId, title);
+    return restService.updateQuestion(questionId, title);
 
   }
 

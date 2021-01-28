@@ -20,36 +20,36 @@ public class QuestionRestService {
     this.questionRepository = questionRepository;
   }
 
-  public String getQuestionById(long id) {
+  public QuestionEntity getQuestionById(long id) {
     QuestionEntity question = questionRepository.findById(id);
     if (question == null) {
       throw new ElementNotFoundException();
     }
-    return question.toString();
+    return question;
 
   }
 
-  public List<String> getAllQuestions() {
-    List<String> questions = new ArrayList<>();
+  public List<QuestionEntity> getAllQuestions() {
+    List<QuestionEntity> questions = new ArrayList<>();
     for (QuestionEntity question : questionRepository.findAll()) {
-      questions.add(question.toString());
+      questions.add(question);
     }
     return questions;
 
   }
 
-  public void createQuestion(String title) {
-    questionRepository.save(new QuestionEntity(title));
+  public QuestionEntity createQuestion(QuestionEntity title) {
+    return questionRepository.save(title);
 
   }
 
-  public void updateQuestion(long id, String title) {
+  public QuestionEntity updateQuestion(long id, QuestionEntity title) {
     QuestionEntity question = questionRepository.findById(id);
     if (question == null) {
       throw new ElementNotFoundException();
     }
-    question.setTitle(title);
-    questionRepository.save(question);
+    question.setTitle(title.getTitle());
+    return questionRepository.save(question);
   }
 
   public void deleteQuestion(long id) {

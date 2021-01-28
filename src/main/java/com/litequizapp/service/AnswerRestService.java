@@ -20,36 +20,36 @@ public class AnswerRestService {
     this.answerRepository = answerRepository;
   }
 
-  public String getAnswerById(long id) {
+  public AnswerEntity getAnswerById(long id) {
     AnswerEntity answer = answerRepository.findById(id);
     if (answer == null) {
       throw new ElementNotFoundException();
     }
-    return answer.toString();
+    return answer;
 
   }
 
-  public List<String> getAllAnswers() {
-    List<String> answers = new ArrayList<>();
+  public List<AnswerEntity> getAllAnswers() {
+    List<AnswerEntity> answers = new ArrayList<>();
     for (AnswerEntity answer : answerRepository.findAll()) {
-      answers.add(answer.toString());
+      answers.add(answer);
     }
     return answers;
 
   }
 
-  public void createAnswer(String title) {
-    answerRepository.save(new AnswerEntity(title));
+  public AnswerEntity createAnswer(AnswerEntity title) {
+    return answerRepository.save(title);
 
   }
 
-  public void updateAnswer(long id, String title) {
+  public AnswerEntity updateAnswer(long id, AnswerEntity title) {
     AnswerEntity answer = answerRepository.findById(id);
     if (answer == null) {
       throw new ElementNotFoundException();
     }
-    answer.setTitle(title);
-    answerRepository.save(answer);
+    answer.setTitle(title.getTitle());
+    return answerRepository.save(answer);
   }
 
   public void deleteAnswer(long id) {
