@@ -1,6 +1,7 @@
 package com.litequizapp.service;
 
 import com.litequizapp.entity.CategoryEntity;
+import com.litequizapp.exception.CategoryBadRequestException;
 import com.litequizapp.exception.ElementNotFoundException;
 import com.litequizapp.repository.CategoryRepository;
 import java.util.ArrayList;
@@ -40,6 +41,9 @@ public class CategoryRestService {
   }
 
   public CategoryEntity createCategory(CategoryEntity title) {
+    if (title.getTitle() == null){
+      throw new CategoryBadRequestException();
+    }
     return categoryRepository.save(title);
 
   }
@@ -48,6 +52,9 @@ public class CategoryRestService {
     CategoryEntity category = categoryRepository.findById(id);
     if (category == null) {
       throw new ElementNotFoundException();
+    }
+    if (title.getTitle() == null){
+      throw new CategoryBadRequestException();
     }
     category.setTitle(title.getTitle());
     return categoryRepository.save(category);

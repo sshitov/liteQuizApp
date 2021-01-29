@@ -2,6 +2,7 @@ package com.litequizapp.service;
 
 import com.litequizapp.entity.QuestionEntity;
 import com.litequizapp.exception.ElementNotFoundException;
+import com.litequizapp.exception.QuestionBadRequestException;
 import com.litequizapp.repository.QuestionRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,9 @@ public class QuestionRestService {
   }
 
   public QuestionEntity createQuestion(QuestionEntity title) {
+    if (title.getTitle() == null){
+      throw new QuestionBadRequestException();
+    }
     return questionRepository.save(title);
 
   }
@@ -47,6 +51,9 @@ public class QuestionRestService {
     QuestionEntity question = questionRepository.findById(id);
     if (question == null) {
       throw new ElementNotFoundException();
+    }
+    if (title.getTitle() == null){
+      throw new QuestionBadRequestException();
     }
     question.setTitle(title.getTitle());
     return questionRepository.save(question);
