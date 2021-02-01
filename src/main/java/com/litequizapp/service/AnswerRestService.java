@@ -39,24 +39,29 @@ public class AnswerRestService {
 
   }
 
-  public AnswerEntity createAnswer(AnswerEntity title) {
-    if (title.getTitle() == null){
+  public AnswerEntity createAnswer(AnswerEntity answerEntity) {
+    if (answerEntity.getTitle() == null){
       throw new AnswerBadRequestException();
     }
-    return answerRepository.save(title);
+
+    return answerRepository.save(answerEntity);
 
   }
 
-  public AnswerEntity updateAnswer(long id, AnswerEntity title) {
+  public AnswerEntity updateAnswer(long id, AnswerEntity answerEntity) {
     AnswerEntity answer = answerRepository.findById(id);
     if (answer == null) {
       throw new ElementNotFoundException();
     }
-    if (title.getTitle() == null){
+    if (answerEntity.getTitle() == null){
       throw new AnswerBadRequestException();
     }
-    answer.setTitle(title.getTitle());
+
+    answer.setTitle(answerEntity.getTitle());
+    answer.setIsRight(answerEntity.getIsRight());
+    answer.setQuestionId(answerEntity.getQuestionId());
     return answerRepository.save(answer);
+
   }
 
   public void deleteAnswer(long id) {

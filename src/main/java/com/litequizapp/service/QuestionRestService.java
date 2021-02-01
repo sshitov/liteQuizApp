@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class QuestionRestService {
 
   private final QuestionRepository questionRepository;
+  private CategoryRestService categoryRestService;
 
   @Autowired
   public QuestionRestService(QuestionRepository questionRepository) {
@@ -39,23 +40,26 @@ public class QuestionRestService {
 
   }
 
-  public QuestionEntity createQuestion(QuestionEntity title) {
-    if (title.getTitle() == null){
+  public QuestionEntity createQuestion(QuestionEntity questionEntity) {
+    if (questionEntity.getTitle() == null){
       throw new QuestionBadRequestException();
     }
-    return questionRepository.save(title);
+
+    return questionRepository.save(questionEntity);
 
   }
 
-  public QuestionEntity updateQuestion(long id, QuestionEntity title) {
+  public QuestionEntity updateQuestion(long id, QuestionEntity questionEntity) {
     QuestionEntity question = questionRepository.findById(id);
     if (question == null) {
       throw new ElementNotFoundException();
     }
-    if (title.getTitle() == null){
+    if (questionEntity.getTitle() == null){
       throw new QuestionBadRequestException();
     }
-    question.setTitle(title.getTitle());
+
+    question.setTitle(questionEntity.getTitle());
+    question.setCategoryId(questionEntity.getCategoryId());
     return questionRepository.save(question);
   }
 

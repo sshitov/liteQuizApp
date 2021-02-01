@@ -40,23 +40,23 @@ public class CategoryRestService {
 
   }
 
-  public CategoryEntity createCategory(CategoryEntity title) {
-    if (title.getTitle() == null){
+  public CategoryEntity createCategory(CategoryEntity categoryEntity) {
+    if (categoryEntity.getTitle() == null){
       throw new CategoryBadRequestException();
     }
-    return categoryRepository.save(title);
+    return categoryRepository.save(categoryEntity);
 
   }
 
-  public CategoryEntity updateCategory(long id, CategoryEntity title) {
+  public CategoryEntity updateCategory(long id, CategoryEntity categoryEntity) {
     CategoryEntity category = categoryRepository.findById(id);
     if (category == null) {
       throw new ElementNotFoundException();
     }
-    if (title.getTitle() == null){
+    if (categoryEntity.getTitle() == null){
       throw new CategoryBadRequestException();
     }
-    category.setTitle(title.getTitle());
+    category.setTitle(categoryEntity.getTitle());
     return categoryRepository.save(category);
   }
 

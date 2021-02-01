@@ -37,14 +37,14 @@ public class AnswerRestController {
   }
 
   @PutMapping
-  public AnswerEntity createCategoryRequest(@RequestBody AnswerEntity title) {
-    return restService.createAnswer(title);
+  public AnswerEntity createCategoryRequest(@RequestBody AnswerEntity answerEntity) {
+    return restService.createAnswer(answerEntity);
   }
 
   @PostMapping(value = "/{id}")
-  public AnswerEntity updateCategoryRequest(@PathVariable String id, @RequestBody AnswerEntity title) {
+  public AnswerEntity updateCategoryRequest(@PathVariable String id, @RequestBody AnswerEntity answerEntity) {
     long answerId = Long.parseLong(id);
-    return restService.updateAnswer(answerId, title);
+    return restService.updateAnswer(answerId, answerEntity);
 
   }
 

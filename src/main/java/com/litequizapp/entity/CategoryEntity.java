@@ -24,16 +24,15 @@ public class CategoryEntity {
       generator = "category_seq")
   @SequenceGenerator(name = "category_seq",
       sequenceName = "category_sequence", allocationSize = 1)
-  @Column(name = "id")
+  @Column(name = "category_id")
   @Getter
   private Long id;
 
-  @Column(name = "title")
+  @Column(name = "category_title")
   @Getter
   @Setter
   @NonNull
   private String title;
-
 
   @Override
   public String toString() {
