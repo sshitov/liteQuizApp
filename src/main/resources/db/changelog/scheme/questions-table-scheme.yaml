@@ -7,17 +7,22 @@ databaseChangeLog:
               tableName: questions
               columns:
                 -  column:
-                     name:  id
+                     name:  question_id
                      type:  bigint
                      autoIncrement: true
                      constraints:
                        primaryKey: true
                        nullable: false
                 -  column:
-                     name: title
-                     type: varchar(150)
+                     name: question_title
+                     type: varchar(500)
                      constraints:
                        nullable: false
+                - column:
+                    name: category_id
+                    type: bigint
+                    constraints:
+                      nullable: true
          - createSequence:
              sequenceName: question_sequence
              startValue: 1

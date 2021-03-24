@@ -1,5 +1,6 @@
 package com.litequizapp.controller;
 
+import com.litequizapp.entity.CategoryEntity;
 import com.litequizapp.service.CategoryRestService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,28 +25,28 @@ public class CategoryRestController {
     this.restService = restService;
   }
 
+
   @GetMapping
-  public ResponseEntity<List<String>> getAllCategories() {
+  public ResponseEntity<List<CategoryEntity>> getAllCategories() {
+
     return ResponseEntity.ok(restService.getAllCategories());
   }
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<String> getCategoryByIdRequest(@PathVariable String id) {
+  public ResponseEntity<CategoryEntity> getCategoryByIdRequest(@PathVariable String id) {
     long categoryId = Long.parseLong(id);
     return ResponseEntity.ok(restService.getCategoryById(categoryId));
   }
 
   @PutMapping
-  public void createCategoryRequest(@RequestBody String title) {
-    restService.createCategory(title);
-
+  public CategoryEntity createCategoryRequest(@RequestBody CategoryEntity categoryEntity) {
+    return restService.createCategory(categoryEntity);
   }
 
-
   @PostMapping(value = "/{id}")
-  public void updateCategoryRequest(@PathVariable String id, @RequestBody String title) {
+  public CategoryEntity updateCategoryRequest(@PathVariable String id, @RequestBody CategoryEntity categoryEntity) {
     long categoryId = Long.parseLong(id);
-    restService.updateCategory(categoryId, title);
+    return restService.updateCategory(categoryId, categoryEntity);
 
   }
 

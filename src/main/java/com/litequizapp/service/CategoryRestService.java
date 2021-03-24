@@ -1,6 +1,7 @@
 package com.litequizapp.service;
 
 import com.litequizapp.entity.CategoryEntity;
+import com.litequizapp.exception.CategoryBadRequestException;
 import com.litequizapp.exception.ElementNotFoundException;
 import com.litequizapp.repository.CategoryRepository;
 import java.util.ArrayList;
@@ -20,36 +21,43 @@ public class CategoryRestService {
     this.categoryRepository = categoryRepository;
   }
 
-  public String getCategoryById(long id) {
+
+  public CategoryEntity getCategoryById(long id) {
     CategoryEntity category = categoryRepository.findById(id);
     if (category == null) {
       throw new ElementNotFoundException();
     }
-    return category.toString();
+    return category;
 
   }
 
-  public List<String> getAllCategories() {
-    List<String> categories = new ArrayList<>();
+  public List<CategoryEntity> getAllCategories() {
+    List<CategoryEntity> categories = new ArrayList<>();
     for (CategoryEntity category : categoryRepository.findAll()) {
-      categories.add(category.toString());
+      categories.add(category);
     }
     return categories;
 
   }
 
-  public void createCategory(String title) {
-    categoryRepository.save(new CategoryEntity(title));
+  public CategoryEntity createCategory(CategoryEntity categoryEntity) {
+    if (categoryEntity.getTitle() == null){
+      throw new CategoryBadRequestException();
+    }
+    return categoryRepository.save(categoryEntity);
 
   }
 
-  public void updateCategory(long id, String title) {
+  public CategoryEntity updateCategory(long id, CategoryEntity categoryEntity) {
     CategoryEntity category = categoryRepository.findById(id);
     if (category == null) {
       throw new ElementNotFoundException();
     }
-    category.setTitle(title);
-    categoryRepository.save(category);
+    if (categoryEntity.getTitle() == null){
+      throw new CategoryBadRequestException();
+    }
+    category.setTitle(categoryEntity.getTitle());
+    return categoryRepository.save(category);
   }
 
   public void deleteCategory(long id) {

@@ -7,20 +7,25 @@ databaseChangeLog:
               tableName: answers
               columns:
                 -  column:
-                     name:  id
+                     name:  answer_id
                      type:  bigint
                      autoIncrement: true
                      constraints:
                        primaryKey: true
                        nullable: false
                 -  column:
-                     name: title
-                     type: varchar(150)
+                     name: answer_title
+                     type: varchar(500)
                      constraints:
                        nullable: false
                 - column:
                     name: is_right
                     type: boolean
+                    constraints:
+                      nullable: true
+                - column:
+                    name: question_id
+                    type: bigint
                     constraints:
                       nullable: true
          - createSequence:

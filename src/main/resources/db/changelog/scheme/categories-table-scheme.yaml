@@ -7,14 +7,14 @@ databaseChangeLog:
               tableName: categories
               columns:
                 -  column:
-                     name:  id
+                     name:  category_id
                      type:  bigint
                      autoIncrement: true
                      constraints:
                        primaryKey: true
                        nullable: false
                 -  column:
-                     name: title
+                     name: category_title
                      type: varchar(150)
                      constraints:
                        nullable: false

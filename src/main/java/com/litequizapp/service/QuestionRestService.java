@@ -2,6 +2,7 @@ package com.litequizapp.service;
 
 import com.litequizapp.entity.QuestionEntity;
 import com.litequizapp.exception.ElementNotFoundException;
+import com.litequizapp.exception.QuestionBadRequestException;
 import com.litequizapp.repository.QuestionRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,42 +15,52 @@ import org.springframework.stereotype.Service;
 public class QuestionRestService {
 
   private final QuestionRepository questionRepository;
+  private CategoryRestService categoryRestService;
 
   @Autowired
   public QuestionRestService(QuestionRepository questionRepository) {
     this.questionRepository = questionRepository;
   }
 
-  public String getQuestionById(long id) {
+  public QuestionEntity getQuestionById(long id) {
     QuestionEntity question = questionRepository.findById(id);
     if (question == null) {
       throw new ElementNotFoundException();
     }
-    return question.toString();
+    return question;
 
   }
 
-  public List<String> getAllQuestions() {
-    List<String> questions = new ArrayList<>();
+  public List<QuestionEntity> getAllQuestions() {
+    List<QuestionEntity> questions = new ArrayList<>();
     for (QuestionEntity question : questionRepository.findAll()) {
-      questions.add(question.toString());
+      questions.add(question);
     }
     return questions;
 
   }
 
-  public void createQuestion(String title) {
-    questionRepository.save(new QuestionEntity(title));
+  public QuestionEntity createQuestion(QuestionEntity questionEntity) {
+    if (questionEntity.getTitle() == null){
+      throw new QuestionBadRequestException();
+    }
+
+    return questionRepository.save(questionEntity);
 
   }
 
-  public void updateQuestion(long id, String title) {
+  public QuestionEntity updateQuestion(long id, QuestionEntity questionEntity) {
     QuestionEntity question = questionRepository.findById(id);
     if (question == null) {
       throw new ElementNotFoundException();
     }
-    question.setTitle(title);
-    questionRepository.save(question);
+    if (questionEntity.getTitle() == null){
+      throw new QuestionBadRequestException();
+    }
+
+    question.setTitle(questionEntity.getTitle());
+    question.setCategoryId(questionEntity.getCategoryId());
+    return questionRepository.save(question);
   }
 
   public void deleteQuestion(long id) {
