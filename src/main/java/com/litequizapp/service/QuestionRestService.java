@@ -1,11 +1,15 @@
 package com.litequizapp.service;
 
+import com.litequizapp.dto.QuestionDTO;
+import com.litequizapp.entity.CategoryEntity;
 import com.litequizapp.entity.QuestionEntity;
 import com.litequizapp.exception.ElementNotFoundException;
 import com.litequizapp.exception.QuestionBadRequestException;
+import com.litequizapp.repository.CategoryRepository;
 import com.litequizapp.repository.QuestionRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +19,12 @@ import org.springframework.stereotype.Service;
 public class QuestionRestService {
 
   private final QuestionRepository questionRepository;
-  private CategoryRestService categoryRestService;
+  private final CategoryRepository categoryRepository;
 
   @Autowired
-  public QuestionRestService(QuestionRepository questionRepository) {
+  public QuestionRestService(QuestionRepository questionRepository, CategoryRepository categoryRepository) {
     this.questionRepository = questionRepository;
+    this.categoryRepository = categoryRepository;
   }
 
   public QuestionEntity getQuestionById(long id) {
@@ -40,27 +45,43 @@ public class QuestionRestService {
 
   }
 
-  public QuestionEntity createQuestion(QuestionEntity questionEntity) {
-    if (questionEntity.getTitle() == null){
+  public QuestionDTO createQuestion(QuestionDTO questionDto) {
+
+    if (questionDto.getTitle() == null || questionDto.getCategoryId() == null) {
       throw new QuestionBadRequestException();
     }
+    try {
+      CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId()).get();
+      QuestionEntity questionEntity = new QuestionEntity(questionDto.getTitle(), categoryId);
+      questionRepository.save(questionEntity);
+    } catch (NoSuchElementException e){
+      throw new ElementNotFoundException();
+    }
 
-    return questionRepository.save(questionEntity);
+    return questionDto;
 
   }
 
-  public QuestionEntity updateQuestion(long id, QuestionEntity questionEntity) {
+  public QuestionDTO updateQuestion(long id, QuestionDTO questionDto) {
+
     QuestionEntity question = questionRepository.findById(id);
     if (question == null) {
       throw new ElementNotFoundException();
     }
-    if (questionEntity.getTitle() == null){
+    if (questionDto.getTitle() == null || questionDto.getCategoryId() == null) {
       throw new QuestionBadRequestException();
     }
+    try {
+      CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId()).get();
 
-    question.setTitle(questionEntity.getTitle());
-    question.setCategoryId(questionEntity.getCategoryId());
-    return questionRepository.save(question);
+      question.setTitle(questionDto.getTitle());
+      question.setCategory(categoryId);
+      questionRepository.save(question);
+    } catch (NoSuchElementException e){
+      throw new ElementNotFoundException();
+    }
+
+    return questionDto;
   }
 
   public void deleteQuestion(long id) {

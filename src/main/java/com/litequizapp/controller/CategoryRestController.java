@@ -1,5 +1,6 @@
 package com.litequizapp.controller;
 
+import com.litequizapp.dto.CategoryDTO;
 import com.litequizapp.entity.CategoryEntity;
 import com.litequizapp.service.CategoryRestService;
 import java.util.List;
@@ -38,15 +39,17 @@ public class CategoryRestController {
     return ResponseEntity.ok(restService.getCategoryById(categoryId));
   }
 
+
   @PutMapping
-  public CategoryEntity createCategoryRequest(@RequestBody CategoryEntity categoryEntity) {
-    return restService.createCategory(categoryEntity);
+  public CategoryDTO createCategoryRequest(@RequestBody CategoryDTO categoryDTO) {
+    return restService.createCategory(categoryDTO);
   }
 
+
   @PostMapping(value = "/{id}")
-  public CategoryEntity updateCategoryRequest(@PathVariable String id, @RequestBody CategoryEntity categoryEntity) {
+  public CategoryDTO updateCategoryRequest(@PathVariable String id, @RequestBody CategoryDTO categoryDTO) {
     long categoryId = Long.parseLong(id);
-    return restService.updateCategory(categoryId, categoryEntity);
+    return restService.updateCategory(categoryId, categoryDTO);
 
   }
 

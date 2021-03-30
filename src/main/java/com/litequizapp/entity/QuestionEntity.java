@@ -2,7 +2,6 @@ package com.litequizapp.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,11 +36,17 @@ public class QuestionEntity {
   @NonNull
   private String title;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "category_id")
-  @Setter
   @Getter
-  private CategoryEntity categoryId;
+  @Setter
+  @OneToOne
+  @JoinColumn(name = "category_id")
+  private CategoryEntity category;
+
+  public QuestionEntity(String title, CategoryEntity category) {
+    this.title = title;
+    this.category = category;
+
+  }
 
   @Override
   public String toString() {

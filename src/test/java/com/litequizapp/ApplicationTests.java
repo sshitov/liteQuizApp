@@ -54,6 +54,7 @@ public class ApplicationTests {
 
   @Test
   public void saveAndGetAnswerEntityTest() {
+
     AnswerEntity answerEntity = answerRepository
         .save(new AnswerEntity("Save Answer Entity Test"));
 

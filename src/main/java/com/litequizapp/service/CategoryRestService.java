@@ -1,5 +1,6 @@
 package com.litequizapp.service;
 
+import com.litequizapp.dto.CategoryDTO;
 import com.litequizapp.entity.CategoryEntity;
 import com.litequizapp.exception.CategoryBadRequestException;
 import com.litequizapp.exception.ElementNotFoundException;
@@ -21,7 +22,6 @@ public class CategoryRestService {
     this.categoryRepository = categoryRepository;
   }
 
-
   public CategoryEntity getCategoryById(long id) {
     CategoryEntity category = categoryRepository.findById(id);
     if (category == null) {
@@ -40,24 +40,30 @@ public class CategoryRestService {
 
   }
 
-  public CategoryEntity createCategory(CategoryEntity categoryEntity) {
-    if (categoryEntity.getTitle() == null){
+  public CategoryDTO createCategory(CategoryDTO categoryDTO) {
+    if (categoryDTO.getTitle() == null) {
       throw new CategoryBadRequestException();
     }
-    return categoryRepository.save(categoryEntity);
 
+    CategoryEntity categoryEntity = new CategoryEntity(categoryDTO.getTitle());
+    categoryRepository.save(categoryEntity);
+
+    return categoryDTO;
   }
 
-  public CategoryEntity updateCategory(long id, CategoryEntity categoryEntity) {
+  public CategoryDTO updateCategory(long id, CategoryDTO categoryDTO) {
     CategoryEntity category = categoryRepository.findById(id);
     if (category == null) {
       throw new ElementNotFoundException();
     }
-    if (categoryEntity.getTitle() == null){
+    if (categoryDTO.getTitle() == null) {
       throw new CategoryBadRequestException();
     }
-    category.setTitle(categoryEntity.getTitle());
-    return categoryRepository.save(category);
+
+    category.setTitle(categoryDTO.getTitle());
+    categoryRepository.save(category);
+
+    return categoryDTO;
   }
 
   public void deleteCategory(long id) {
