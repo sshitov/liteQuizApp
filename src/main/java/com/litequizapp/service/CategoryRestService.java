@@ -7,20 +7,17 @@ import com.litequizapp.exception.ElementNotFoundException;
 import com.litequizapp.repository.CategoryRepository;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CategoryRestService {
 
   private final CategoryRepository categoryRepository;
 
-  @Autowired
-  public CategoryRestService(CategoryRepository categoryRepository) {
-    this.categoryRepository = categoryRepository;
-  }
 
   public CategoryEntity getCategoryById(long id) {
     CategoryEntity category = categoryRepository.findById(id);

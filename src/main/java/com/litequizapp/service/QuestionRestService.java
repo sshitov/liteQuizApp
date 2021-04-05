@@ -10,21 +10,17 @@ import com.litequizapp.repository.QuestionRepository;
 import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class QuestionRestService {
 
   private final QuestionRepository questionRepository;
   private final CategoryRepository categoryRepository;
 
-  @Autowired
-  public QuestionRestService(QuestionRepository questionRepository, CategoryRepository categoryRepository) {
-    this.questionRepository = questionRepository;
-    this.categoryRepository = categoryRepository;
-  }
 
   public QuestionEntity getQuestionById(long id) {
     QuestionEntity question = questionRepository.findById(id);
