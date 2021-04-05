@@ -9,7 +9,6 @@ import com.litequizapp.repository.AnswerRepository;
 import com.litequizapp.repository.QuestionRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,18 +46,14 @@ public class AnswerRestService {
 
 
   public AnswerDTO createAnswer(AnswerDTO answerDTO) {
-    if (answerDTO.getTitle() == null) {
+    if (answerDTO.getTitle() == null || answerDTO.getQuestionId() == null) {
       throw new AnswerBadRequestException();
     }
-    try {
-      QuestionEntity questionId = questionRepository.findById(answerDTO.getQuestionId()).get();
+
+      QuestionEntity questionId = questionRepository.findById(answerDTO.getQuestionId()).orElseThrow(ElementNotFoundException::new);
       AnswerEntity answerEntity = new AnswerEntity(answerDTO.getTitle(), answerDTO.getIsRight(), questionId);
 
       answerRepository.save(answerEntity);
-
-    } catch (NoSuchElementException e) {
-      throw new ElementNotFoundException();
-    }
 
     return answerDTO;
   }
@@ -69,20 +64,17 @@ public class AnswerRestService {
     if (answer == null) {
       throw new ElementNotFoundException();
     }
-    if (answerDTO.getTitle() == null) {
+    if (answerDTO.getTitle() == null || answerDTO.getQuestionId() == null) {
       throw new AnswerBadRequestException();
     }
-    try {
-      QuestionEntity questionId = questionRepository.findById(answerDTO.getQuestionId()).get();
+
+      QuestionEntity questionId = questionRepository.findById(answerDTO.getQuestionId()).orElseThrow(ElementNotFoundException::new);
 
       answer.setTitle(answerDTO.getTitle());
       answer.setIsRight(answerDTO.getIsRight());
       answer.setQuestion(questionId);
-      answerRepository.save(answer);
 
-    } catch (NoSuchElementException e) {
-      throw new ElementNotFoundException();
-    }
+      answerRepository.save(answer);
 
     return answerDTO;
   }
