@@ -9,40 +9,31 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
+@Entity
+@Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Entity
 @Table(name = "answers")
 public class AnswerEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE,
-      generator = "answer_seq")
-  @SequenceGenerator(name = "answer_seq",
-      sequenceName = "answer_sequence", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "answer_seq")
+  @SequenceGenerator(name = "answer_seq", sequenceName = "answer_sequence", allocationSize = 1)
   @Column(name = "answer_id")
-  @Getter
   private Long id;
 
-  @Column(name = "answer_title")
-  @Getter
-  @Setter
   @NonNull
+  @Column(name = "answer_title")
   private String title;
 
   @Column(name = "is_right")
-  @Getter
-  @Setter
   private Boolean isRight = false;
 
-  @Setter
-  @Getter
   @OneToOne
   @JoinColumn(name = "question_id")
   private QuestionEntity question;
@@ -51,11 +42,6 @@ public class AnswerEntity {
     this.title = title;
     this.isRight = isRight;
     this.question = question;
-  }
-
-  @Override
-  public String toString() {
-    return String.format("Answer[id='%d', title='%s', isRight='%b']", id, title, isRight);
   }
 
 }

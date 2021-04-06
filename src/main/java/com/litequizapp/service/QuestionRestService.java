@@ -21,14 +21,12 @@ public class QuestionRestService {
   private final QuestionRepository questionRepository;
   private final CategoryRepository categoryRepository;
 
-
   public QuestionEntity getQuestionById(long id) {
     QuestionEntity question = questionRepository.findById(id);
     if (question == null) {
       throw new ElementNotFoundException();
     }
     return question;
-
   }
 
   public List<QuestionEntity> getAllQuestions() {
@@ -37,22 +35,17 @@ public class QuestionRestService {
       questions.add(question);
     }
     return questions;
-
   }
 
   public QuestionDTO createQuestion(QuestionDTO questionDto) {
-
     if (questionDto.getTitle() == null || questionDto.getCategoryId() == null) {
       throw new QuestionBadRequestException();
     }
-
-      CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId()).orElseThrow(ElementNotFoundException::new);
-      QuestionEntity questionEntity = new QuestionEntity(questionDto.getTitle(), categoryId);
-
-      questionRepository.save(questionEntity);
-
+    CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId())
+        .orElseThrow(ElementNotFoundException::new);
+    QuestionEntity questionEntity = new QuestionEntity(questionDto.getTitle(), categoryId);
+    questionRepository.save(questionEntity);
     return questionDto;
-
   }
 
   public QuestionDTO updateQuestion(long id, QuestionDTO questionDto) {
@@ -64,14 +57,11 @@ public class QuestionRestService {
     if (questionDto.getTitle() == null || questionDto.getCategoryId() == null) {
       throw new QuestionBadRequestException();
     }
-
-      CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId()).orElseThrow(ElementNotFoundException::new);
-
-      question.setTitle(questionDto.getTitle());
-      question.setCategory(categoryId);
-
-      questionRepository.save(question);
-
+    CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId())
+        .orElseThrow(ElementNotFoundException::new);
+    question.setTitle(questionDto.getTitle());
+    question.setCategory(categoryId);
+    questionRepository.save(question);
     return questionDto;
   }
 
@@ -81,7 +71,6 @@ public class QuestionRestService {
       throw new ElementNotFoundException();
     }
     questionRepository.deleteById(id);
-
   }
 
 }

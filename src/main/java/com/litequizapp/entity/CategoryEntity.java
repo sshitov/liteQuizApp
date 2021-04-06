@@ -7,36 +7,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
+@Entity
+@Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Entity
 @Table(name = "categories")
 public class CategoryEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE,
-      generator = "category_seq")
-  @SequenceGenerator(name = "category_seq",
-      sequenceName = "category_sequence", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_seq")
+  @SequenceGenerator(name = "category_seq", sequenceName = "category_sequence", allocationSize = 1)
   @Column(name = "category_id")
-  @Getter
   private Long id;
 
-  @Column(name = "category_title")
-  @Getter
-  @Setter
   @NonNull
+  @Column(name = "category_title")
   private String title;
-
-  @Override
-  public String toString() {
-    return String.format("Category[id='%d', title='%s']", id, title);
-  }
 
 }

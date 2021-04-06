@@ -37,7 +37,6 @@ public class ApplicationTests {
 
     Assertions.assertEquals(categoryEntity.toString(), foundEntity.get(0).toString());
     log.info("saveAndGetCategoryEntityTest - 'Passed'");
-
   }
 
   @Test
@@ -49,12 +48,10 @@ public class ApplicationTests {
 
     Assertions.assertEquals(questionEntity.toString(), foundEntity.get(0).toString());
     log.info("saveAndGetQuestionEntityTest - 'Passed'");
-
   }
 
   @Test
   public void saveAndGetAnswerEntityTest() {
-
     AnswerEntity answerEntity = answerRepository
         .save(new AnswerEntity("Save Answer Entity Test"));
 
@@ -62,7 +59,6 @@ public class ApplicationTests {
 
     Assertions.assertEquals(answerEntity.toString(), foundEntity.get(0).toString());
     log.info("saveAndGetAnswerEntityTest - 'Passed'");
-
   }
 
 }

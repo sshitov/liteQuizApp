@@ -18,14 +18,12 @@ public class CategoryRestService {
 
   private final CategoryRepository categoryRepository;
 
-
   public CategoryEntity getCategoryById(long id) {
     CategoryEntity category = categoryRepository.findById(id);
     if (category == null) {
       throw new ElementNotFoundException();
     }
     return category;
-
   }
 
   public List<CategoryEntity> getAllCategories() {
@@ -34,17 +32,14 @@ public class CategoryRestService {
       categories.add(category);
     }
     return categories;
-
   }
 
   public CategoryDTO createCategory(CategoryDTO categoryDTO) {
     if (categoryDTO.getTitle() == null) {
       throw new CategoryBadRequestException();
     }
-
     CategoryEntity categoryEntity = new CategoryEntity(categoryDTO.getTitle());
     categoryRepository.save(categoryEntity);
-
     return categoryDTO;
   }
 
@@ -56,10 +51,8 @@ public class CategoryRestService {
     if (categoryDTO.getTitle() == null) {
       throw new CategoryBadRequestException();
     }
-
     category.setTitle(categoryDTO.getTitle());
     categoryRepository.save(category);
-
     return categoryDTO;
   }
 
@@ -69,7 +62,6 @@ public class CategoryRestService {
       throw new ElementNotFoundException();
     }
     categoryRepository.deleteById(id);
-
   }
 
 }
