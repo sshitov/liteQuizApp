@@ -19,10 +19,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DTOValidationTests {
 
   private Validator validator;
+  private CategoryDTO category;
+  private QuestionDTO question;
+  private AnswerDTO answer;
+  private List<String> validationErrors;
 
   @BeforeEach
   public void setUp() {
-
+    category = new CategoryDTO();
+    question = new QuestionDTO();
+    answer = new AnswerDTO();
+    validationErrors = new ArrayList<>();
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     validator = factory.getValidator();
   }
@@ -30,42 +37,33 @@ public class DTOValidationTests {
   @Test
   @DisplayName("CategoryDTO with the filled title doesn't return exceptions")
   public void categoryDTOIsValid() {
-    CategoryDTO dto = new CategoryDTO();
-    dto.setTitle("Test valid category title");
-    Set<ConstraintViolation<CategoryDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<CategoryDTO>> violations = validator
+        .validate(createCategoryDTO("Test valid category title"));
     assertTrue(violations.isEmpty(), "should be empty, but violations size: " + violations.size());
   }
 
   @Test
   @DisplayName("QuestionDTO with the filled title and category id doesn't return exceptions")
   public void questionDTOIsValid() {
-    QuestionDTO dto = new QuestionDTO();
-    dto.setTitle("Test valid question title");
-    dto.setCategoryId(1L);
-    Set<ConstraintViolation<QuestionDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<QuestionDTO>> violations = validator
+        .validate(createQuestionDTO("Test valid question title", 1L));
     assertTrue(violations.isEmpty(), "should be empty, but violations size: " + violations.size());
   }
 
   @Test
   @DisplayName("AnswerDTO with the filled title and question id doesn't return exceptions")
   public void answerDTOIsValid() {
-    AnswerDTO dto = new AnswerDTO();
-    dto.setTitle("Test valid answer title");
-    dto.setQuestionId(1L);
-    dto.setIsRight(true);
-    Set<ConstraintViolation<AnswerDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<AnswerDTO>> violations = validator
+        .validate(createAnswerDTO("Test valid answer title", 1L, true));
     assertTrue(violations.isEmpty(), "should be empty, but violations size: " + violations.size());
   }
 
   @Test
   @DisplayName("CategoryDTO with empty title returned exception and validation message is correct")
   public void categoryTitleIsEmpty() {
-    CategoryDTO dto = new CategoryDTO();
-    dto.setTitle(null);
-    Set<ConstraintViolation<CategoryDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<CategoryDTO>> violations = validator.validate(createCategoryDTO(null));
     assertEquals(1, violations.size(), "should be 1 exception");
 
-    List<String> validationErrors = new ArrayList<>();
     violations.forEach(e -> validationErrors.add(e.getMessage()));
     assertTrue(validationErrors.contains("The title can't be empty"), "Error message isn't correct");
   }
@@ -73,13 +71,9 @@ public class DTOValidationTests {
   @Test
   @DisplayName("QuestionDTO with empty title returned exception and validation message is correct")
   public void questionTitleIsEmpty() {
-    QuestionDTO dto = new QuestionDTO();
-    dto.setTitle(null);
-    dto.setCategoryId(1L);
-    Set<ConstraintViolation<QuestionDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<QuestionDTO>> violations = validator.validate(createQuestionDTO(null, 1L));
     assertEquals(1, violations.size(), "should be 1 exception");
 
-    List<String> validationErrors = new ArrayList<>();
     violations.forEach(e -> validationErrors.add(e.getMessage()));
     assertTrue(validationErrors.contains("The title can't be empty"), "Error message isn't correct");
   }
@@ -87,13 +81,10 @@ public class DTOValidationTests {
   @Test
   @DisplayName("QuestionDTO with empty category id returned exception and validation message is correct")
   public void categoryIdInQuestionIsEmpty() {
-    QuestionDTO dto = new QuestionDTO();
-    dto.setTitle("Valid question title");
-    dto.setCategoryId(null);
-    Set<ConstraintViolation<QuestionDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<QuestionDTO>> violations = validator
+        .validate(createQuestionDTO("Valid question title", null));
     assertEquals(1, violations.size(), "should be 1 exception");
 
-    List<String> validationErrors = new ArrayList<>();
     violations.forEach(e -> validationErrors.add(e.getMessage()));
     assertTrue(validationErrors.contains("related entry id can't be empty"), "Error message isn't correct");
   }
@@ -101,14 +92,9 @@ public class DTOValidationTests {
   @Test
   @DisplayName("AnswerDTO with empty title returned exception and validation message is correct")
   public void answerTitleIsEmpty() {
-    AnswerDTO dto = new AnswerDTO();
-    dto.setTitle(null);
-    dto.setQuestionId(1L);
-    dto.setIsRight(false);
-    Set<ConstraintViolation<AnswerDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<AnswerDTO>> violations = validator.validate(createAnswerDTO(null, 1L, false));
     assertEquals(1, violations.size(), "should be 1 exception");
 
-    List<String> validationErrors = new ArrayList<>();
     violations.forEach(e -> validationErrors.add(e.getMessage()));
     assertTrue(validationErrors.contains("The title can't be empty"), "Error message isn't correct");
   }
@@ -116,15 +102,30 @@ public class DTOValidationTests {
   @Test
   @DisplayName("AnswerDTO with empty question id returned exception and validation message is correct")
   public void questionIdInAnswerIsEmpty() {
-    AnswerDTO dto = new AnswerDTO();
-    dto.setTitle("Valid answer title");
-    dto.setQuestionId(null);
-    Set<ConstraintViolation<AnswerDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<AnswerDTO>> violations = validator
+        .validate(createAnswerDTO("Valid answer title", null, true));
     assertEquals(1, violations.size(), "should be 1 exception");
 
-    List<String> validationErrors = new ArrayList<>();
     violations.forEach(e -> validationErrors.add(e.getMessage()));
     assertTrue(validationErrors.contains("related entry id can't be empty"), "Error message isn't correct");
+  }
+
+  public CategoryDTO createCategoryDTO(String title) {
+    category.setTitle(title);
+    return category;
+  }
+
+  public QuestionDTO createQuestionDTO(String title, Long categoryId) {
+    question.setTitle(title);
+    question.setCategoryId(categoryId);
+    return question;
+  }
+
+  public AnswerDTO createAnswerDTO(String title, Long questionId, boolean isRight) {
+    answer.setTitle(title);
+    answer.setQuestionId(questionId);
+    answer.setIsRight(isRight);
+    return answer;
   }
 
 }
