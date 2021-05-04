@@ -3,7 +3,6 @@ package com.litequizapp.service;
 import com.litequizapp.dto.AnswerDTO;
 import com.litequizapp.entity.AnswerEntity;
 import com.litequizapp.entity.QuestionEntity;
-import com.litequizapp.exception.AnswerBadRequestException;
 import com.litequizapp.exception.ElementNotFoundException;
 import com.litequizapp.repository.AnswerRepository;
 import com.litequizapp.repository.QuestionRepository;
@@ -22,11 +21,8 @@ public class AnswerRestService {
   private final QuestionRepository questionRepository;
 
   public AnswerEntity getAnswerById(long id) {
-    AnswerEntity answer = answerRepository.findById(id);
-    if (answer == null) {
-      throw new ElementNotFoundException();
-    }
-    return answer;
+    return answerRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Answer with id: " + id + " - Not Found"));
   }
 
   public List<AnswerEntity> getAllAnswers() {
@@ -38,26 +34,20 @@ public class AnswerRestService {
   }
 
   public AnswerDTO createAnswer(AnswerDTO answerDTO) {
-    if (answerDTO.getTitle() == null || answerDTO.getQuestionId() == null) {
-      throw new AnswerBadRequestException();
-    }
     QuestionEntity questionId = questionRepository.findById(answerDTO.getQuestionId())
-        .orElseThrow(ElementNotFoundException::new);
+        .orElseThrow(
+            () -> new ElementNotFoundException("Question with id: " + answerDTO.getQuestionId() + " - Not Found"));
     AnswerEntity answerEntity = new AnswerEntity(answerDTO.getTitle(), answerDTO.getIsRight(), questionId);
     answerRepository.save(answerEntity);
     return answerDTO;
   }
 
   public AnswerDTO updateAnswer(long id, AnswerDTO answerDTO) {
-    AnswerEntity answer = answerRepository.findById(id);
-    if (answer == null) {
-      throw new ElementNotFoundException();
-    }
-    if (answerDTO.getTitle() == null || answerDTO.getQuestionId() == null) {
-      throw new AnswerBadRequestException();
-    }
+    AnswerEntity answer = answerRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Answer with id: " + id + " - Not Found"));
     QuestionEntity questionId = questionRepository.findById(answerDTO.getQuestionId())
-        .orElseThrow(ElementNotFoundException::new);
+        .orElseThrow(
+            () -> new ElementNotFoundException("Question with id: " + answerDTO.getQuestionId() + " - Not Found"));
     answer.setTitle(answerDTO.getTitle());
     answer.setIsRight(answerDTO.getIsRight());
     answer.setQuestion(questionId);
@@ -66,10 +56,8 @@ public class AnswerRestService {
   }
 
   public void deleteAnswer(long id) {
-    AnswerEntity answer = answerRepository.findById(id);
-    if (answer == null) {
-      throw new ElementNotFoundException();
-    }
+    answerRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Answer with id: " + id + " - Not Found"));
     answerRepository.deleteById(id);
   }
 

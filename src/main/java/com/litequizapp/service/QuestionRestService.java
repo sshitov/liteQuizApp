@@ -4,7 +4,6 @@ import com.litequizapp.dto.QuestionDTO;
 import com.litequizapp.entity.CategoryEntity;
 import com.litequizapp.entity.QuestionEntity;
 import com.litequizapp.exception.ElementNotFoundException;
-import com.litequizapp.exception.QuestionBadRequestException;
 import com.litequizapp.repository.CategoryRepository;
 import com.litequizapp.repository.QuestionRepository;
 import java.util.ArrayList;
@@ -22,11 +21,8 @@ public class QuestionRestService {
   private final CategoryRepository categoryRepository;
 
   public QuestionEntity getQuestionById(long id) {
-    QuestionEntity question = questionRepository.findById(id);
-    if (question == null) {
-      throw new ElementNotFoundException();
-    }
-    return question;
+    return questionRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Question with id: " + id + " - Not Found"));
   }
 
   public List<QuestionEntity> getAllQuestions() {
@@ -38,27 +34,18 @@ public class QuestionRestService {
   }
 
   public QuestionDTO createQuestion(QuestionDTO questionDto) {
-    if (questionDto.getTitle() == null || questionDto.getCategoryId() == null) {
-      throw new QuestionBadRequestException();
-    }
     CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId())
-        .orElseThrow(ElementNotFoundException::new);
+        .orElseThrow(() -> new ElementNotFoundException("Category with id: " + questionDto.getCategoryId() + " - Not Found"));
     QuestionEntity questionEntity = new QuestionEntity(questionDto.getTitle(), categoryId);
     questionRepository.save(questionEntity);
     return questionDto;
   }
 
   public QuestionDTO updateQuestion(long id, QuestionDTO questionDto) {
-
-    QuestionEntity question = questionRepository.findById(id);
-    if (question == null) {
-      throw new ElementNotFoundException();
-    }
-    if (questionDto.getTitle() == null || questionDto.getCategoryId() == null) {
-      throw new QuestionBadRequestException();
-    }
+    QuestionEntity question = questionRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Question with id: " + id + " - Not Found"));
     CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId())
-        .orElseThrow(ElementNotFoundException::new);
+        .orElseThrow(() -> new ElementNotFoundException("Category with id: " + questionDto.getCategoryId() + " - Not Found"));
     question.setTitle(questionDto.getTitle());
     question.setCategory(categoryId);
     questionRepository.save(question);
@@ -66,10 +53,8 @@ public class QuestionRestService {
   }
 
   public void deleteQuestion(long id) {
-    QuestionEntity question = questionRepository.findById(id);
-    if (question == null) {
-      throw new ElementNotFoundException();
-    }
+    questionRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Question with id: " + id + " - Not Found"));
     questionRepository.deleteById(id);
   }
 

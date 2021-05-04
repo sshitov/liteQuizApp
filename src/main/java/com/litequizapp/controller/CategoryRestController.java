@@ -6,6 +6,7 @@ import com.litequizapp.service.CategoryRestService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,12 +35,12 @@ public class CategoryRestController {
   }
 
   @PutMapping
-  public CategoryDTO createCategoryRequest(@RequestBody CategoryDTO categoryDTO) {
+  public CategoryDTO createCategoryRequest(@Validated @RequestBody CategoryDTO categoryDTO) {
     return restService.createCategory(categoryDTO);
   }
 
   @PostMapping(value = "/{id}")
-  public CategoryDTO updateCategoryRequest(@PathVariable String id, @RequestBody CategoryDTO categoryDTO) {
+  public CategoryDTO updateCategoryRequest(@PathVariable String id, @Validated @RequestBody CategoryDTO categoryDTO) {
     long categoryId = Long.parseLong(id);
     return restService.updateCategory(categoryId, categoryDTO);
   }

@@ -2,7 +2,6 @@ package com.litequizapp.service;
 
 import com.litequizapp.dto.CategoryDTO;
 import com.litequizapp.entity.CategoryEntity;
-import com.litequizapp.exception.CategoryBadRequestException;
 import com.litequizapp.exception.ElementNotFoundException;
 import com.litequizapp.repository.CategoryRepository;
 import java.util.ArrayList;
@@ -19,11 +18,8 @@ public class CategoryRestService {
   private final CategoryRepository categoryRepository;
 
   public CategoryEntity getCategoryById(long id) {
-    CategoryEntity category = categoryRepository.findById(id);
-    if (category == null) {
-      throw new ElementNotFoundException();
-    }
-    return category;
+    return categoryRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Category with id: "+id+" - Not Found"));
   }
 
   public List<CategoryEntity> getAllCategories() {
@@ -35,32 +31,22 @@ public class CategoryRestService {
   }
 
   public CategoryDTO createCategory(CategoryDTO categoryDTO) {
-    if (categoryDTO.getTitle() == null) {
-      throw new CategoryBadRequestException();
-    }
     CategoryEntity categoryEntity = new CategoryEntity(categoryDTO.getTitle());
     categoryRepository.save(categoryEntity);
     return categoryDTO;
   }
 
   public CategoryDTO updateCategory(long id, CategoryDTO categoryDTO) {
-    CategoryEntity category = categoryRepository.findById(id);
-    if (category == null) {
-      throw new ElementNotFoundException();
-    }
-    if (categoryDTO.getTitle() == null) {
-      throw new CategoryBadRequestException();
-    }
+    CategoryEntity category = categoryRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Category with id: "+id+" - Not Found"));
     category.setTitle(categoryDTO.getTitle());
     categoryRepository.save(category);
     return categoryDTO;
   }
 
   public void deleteCategory(long id) {
-    CategoryEntity category = categoryRepository.findById(id);
-    if (category == null) {
-      throw new ElementNotFoundException();
-    }
+    categoryRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Category with id: "+id+" - Not Found"));
     categoryRepository.deleteById(id);
   }
 
