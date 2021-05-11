@@ -1,34 +1,28 @@
 package com.litequizapp.service;
 
+import com.litequizapp.dto.QuestionDTO;
+import com.litequizapp.entity.CategoryEntity;
 import com.litequizapp.entity.QuestionEntity;
 import com.litequizapp.exception.ElementNotFoundException;
-import com.litequizapp.exception.QuestionBadRequestException;
+import com.litequizapp.repository.CategoryRepository;
 import com.litequizapp.repository.QuestionRepository;
 import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class QuestionRestService {
 
   private final QuestionRepository questionRepository;
-  private CategoryRestService categoryRestService;
-
-  @Autowired
-  public QuestionRestService(QuestionRepository questionRepository) {
-    this.questionRepository = questionRepository;
-  }
+  private final CategoryRepository categoryRepository;
 
   public QuestionEntity getQuestionById(long id) {
-    QuestionEntity question = questionRepository.findById(id);
-    if (question == null) {
-      throw new ElementNotFoundException();
-    }
-    return question;
-
+    return questionRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Question with id: " + id + " - Not Found"));
   }
 
   public List<QuestionEntity> getAllQuestions() {
@@ -37,39 +31,31 @@ public class QuestionRestService {
       questions.add(question);
     }
     return questions;
-
   }
 
-  public QuestionEntity createQuestion(QuestionEntity questionEntity) {
-    if (questionEntity.getTitle() == null){
-      throw new QuestionBadRequestException();
-    }
-
-    return questionRepository.save(questionEntity);
-
+  public QuestionDTO createQuestion(QuestionDTO questionDto) {
+    CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId())
+        .orElseThrow(() -> new ElementNotFoundException("Category with id: " + questionDto.getCategoryId() + " - Not Found"));
+    QuestionEntity questionEntity = new QuestionEntity(questionDto.getTitle(), categoryId);
+    questionRepository.save(questionEntity);
+    return questionDto;
   }
 
-  public QuestionEntity updateQuestion(long id, QuestionEntity questionEntity) {
-    QuestionEntity question = questionRepository.findById(id);
-    if (question == null) {
-      throw new ElementNotFoundException();
-    }
-    if (questionEntity.getTitle() == null){
-      throw new QuestionBadRequestException();
-    }
-
-    question.setTitle(questionEntity.getTitle());
-    question.setCategoryId(questionEntity.getCategoryId());
-    return questionRepository.save(question);
+  public QuestionDTO updateQuestion(long id, QuestionDTO questionDto) {
+    QuestionEntity question = questionRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Question with id: " + id + " - Not Found"));
+    CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId())
+        .orElseThrow(() -> new ElementNotFoundException("Category with id: " + questionDto.getCategoryId() + " - Not Found"));
+    question.setTitle(questionDto.getTitle());
+    question.setCategory(categoryId);
+    questionRepository.save(question);
+    return questionDto;
   }
 
   public void deleteQuestion(long id) {
-    QuestionEntity question = questionRepository.findById(id);
-    if (question == null) {
-      throw new ElementNotFoundException();
-    }
+    questionRepository.findById(id)
+        .orElseThrow(() -> new ElementNotFoundException("Question with id: " + id + " - Not Found"));
     questionRepository.deleteById(id);
-
   }
 
 }

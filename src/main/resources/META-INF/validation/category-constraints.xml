@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<constraint-mappings xmlns="http://xmlns.jcp.org/xml/ns/validation/mapping" version="2.0">
+
+  <bean class="com.litequizapp.dto.CategoryDTO">
+    <field name="title">
+      <valid/>
+      <constraint annotation="javax.validation.constraints.NotBlank"/>
+    </field>
+  </bean>
+
+</constraint-mappings>

@@ -1,10 +1,12 @@
 package com.litequizapp.controller;
 
+import com.litequizapp.dto.QuestionDTO;
 import com.litequizapp.entity.QuestionEntity;
 import com.litequizapp.service.QuestionRestService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,14 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/question")
+@RequiredArgsConstructor
 public class QuestionRestController {
 
   private final QuestionRestService restService;
-
-  @Autowired
-  public QuestionRestController(QuestionRestService restService) {
-    this.restService = restService;
-  }
 
   @GetMapping
   public ResponseEntity<List<QuestionEntity>> getAllQuestions() {
@@ -37,22 +35,20 @@ public class QuestionRestController {
   }
 
   @PutMapping
-  public QuestionEntity createCategoryRequest(@RequestBody QuestionEntity questionEntity) {
-    return restService.createQuestion(questionEntity);
+  public QuestionDTO createCategoryRequest(@Validated @RequestBody QuestionDTO questionDto) {
+    return restService.createQuestion(questionDto);
   }
 
   @PostMapping(value = "/{id}")
-  public QuestionEntity updateCategoryRequest(@PathVariable String id, @RequestBody QuestionEntity questionEntity) {
+  public QuestionDTO updateCategoryRequest(@PathVariable String id, @Validated @RequestBody QuestionDTO questionDTO) {
     long questionId = Long.parseLong(id);
-    return restService.updateQuestion(questionId, questionEntity);
-
+    return restService.updateQuestion(questionId, questionDTO);
   }
 
   @DeleteMapping(value = "/{id}")
   public void deleteQuestionByIdRequest(@PathVariable String id) {
     long questionId = Long.parseLong(id);
     restService.deleteQuestion(questionId);
-
   }
 
 }

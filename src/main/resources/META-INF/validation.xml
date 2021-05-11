@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<validation-config xmlns="http://xmlns.jcp.org/xml/ns/validation/configuration" version="2.0">
+  <constraint-mapping>META-INF/validation/category-constraints.xml</constraint-mapping>
+  <constraint-mapping>META-INF/validation/question-constraints.xml</constraint-mapping>
+  <constraint-mapping>META-INF/validation/answer-constraints.xml</constraint-mapping>
+</validation-config>
