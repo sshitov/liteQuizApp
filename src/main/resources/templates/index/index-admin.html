@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <meta charset="UTF-8">
+  <title th:utext="liteQuizApp"></title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="header">
+  <h1>Administration part</h1>
+</div>
+<div class="sidebar">
+  <a class="active" th:href="@{/admin}">Home</a>
+  <a th:href="@{/admin/category}">Category list</a>
+  <a th:href="@{/question}">Question list</a>
+  <a th:href="@{/answer}">Answer list</a>
+</div>
+<div class="content">
+  <h2>Welcome to the administration part of liteQuizApp!</h2>
+  <p>Here you can create, update and view data for the application.</p>
+</div>
+</body>
+</html>

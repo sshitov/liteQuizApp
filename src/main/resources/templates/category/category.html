@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <title>View category</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="header">
+  <h1>Administration part</h1>
+</div>
+<div class="sidebar">
+  <a th:href="@{/admin}">Home</a>
+  <a class="active" th:href="@{/admin/category}">Category list</a>
+  <a th:href="@{/question}">Question list</a>
+  <a th:href="@{/answer}">Answer list</a>
+</div>
+<div class="content">
+  <div th:if="${category}">
+    <h2>Category detail</h2>
+    <table border="0">
+      <tr>
+        <td>ID</td>
+        <td>:</td>
+        <td th:utext="${category.id}">...</td>
+      </tr>
+      <tr>
+        <td>Title</td>
+        <td>:</td>
+        <td th:utext="${category.title}">...</td>
+      </tr>
+    </table>
+    <br/><br/>
+    <div th:if="not ${allowDelete}">
+      <a class="buttonCreate" th:href="@{/admin/category/{id}/update(id=${category.id})}">Edit</a>
+      <a class="buttonDelete" th:href="@{/admin/category/{id}/delete(id=${category.id})}">Delete</a>
+    </div>
+    <div>
+      <form th:if="${allowDelete}" th:action="@{/admin/category/{id}/delete(id=${category.id})}" th:method="DELETE">
+        Delete this category?
+        <button type="submit" class="Accept">Yes</button>
+        <a class="buttonDecline" th:href="@{/admin/category/{id}(id=${category.id})}">No</a>
+      </form>
+    </div>
+  </div>
+  <h2 th:if="${errorMessage}" th:utext="${errorMessage}" class="error"></h2>
+</div>
+</body>
+</html>

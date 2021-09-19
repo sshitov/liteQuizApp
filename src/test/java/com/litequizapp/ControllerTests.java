@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.litequizapp.dto.AnswerDTO;
 import com.litequizapp.dto.CategoryDTO;
 import com.litequizapp.dto.QuestionDTO;
+;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -54,45 +56,46 @@ public class ControllerTests {
 
     getCategory(1)
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(1))
-        .andExpect(jsonPath("$.title").value("New category"));
+        .andExpect(xpath("//tr[1]/td[3]").string("1"))
+        .andExpect(xpath("//tr[2]/td[3]").string("New category"));
   }
 
   @Test
-  @DisplayName("GET category request by Id returned status code 404 and correct validation message")
+  @DisplayName("GET category request by Id returned correct validation message")
   public void category_failGetByNonExistingId() throws Exception {
     getCategory(1)
-        .andExpect(status().isNotFound())
-        .andExpect(jsonPath("$.message").value("The record doesn't exist"))
-        .andExpect(jsonPath("$.errors.[0]").value("Category with id: 1 - Not Found"));
+        .andExpect(status().isOk())
+        .andExpect(xpath("//body/div[3]/h2").string("Category with id: 1 - Not Found"));
   }
 
   @Test
-  @DisplayName("PUT request with a null value for category title parameter returned status code 400 and validation message is correct")
+  @DisplayName("PUT request with a null value for category title parameter returned correct validation message")
   public void category_failCreateByTitle() throws Exception {
     createNewCategory("")
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message").value("Validation Errors"))
-        .andExpect(jsonPath("$.errors.[0]").value("categoryDTO : The title can't be empty"));
+        .andExpect(status().isOk())
+        .andExpect(xpath("//form/p").string("The title can't be empty"));
   }
 
   @Test
-  @DisplayName("PUT request with a correct value for category title parameter returned status code 200 and correct body")
+  @DisplayName("PUT request with a correct value for category title parameter returned status code 3xx and correct body")
   public void category_successCreate() throws Exception {
     createNewCategory("New category")
+        .andExpect(status().is3xxRedirection());
+
+    getCategory(1)
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.title").value("New category"));
+        .andExpect(xpath("//tr[1]/td[3]").string("1"))
+        .andExpect(xpath("//tr[2]/td[3]").string("New category"));
   }
 
   @Test
-  @DisplayName("POST request with a null value for category title parameter returned status code 400 and validation message is correct")
+  @DisplayName("POST request with a null value for category title parameter returned correct validation message")
   public void category_failUpdateByTitle() throws Exception {
     createNewCategory("New category");
 
     updateCategory(null, 1)
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message").value("Validation Errors"))
-        .andExpect(jsonPath("$.errors.[0]").value("categoryDTO : The title can't be empty"));
+        .andExpect(status().isOk())
+        .andExpect(xpath("//form/p").string("The title can't be empty"));
   }
 
   @Test
@@ -101,8 +104,12 @@ public class ControllerTests {
     createNewCategory("New category");
 
     updateCategory("Update category", 1)
+        .andExpect(status().is3xxRedirection());
+
+    getCategory(1)
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.title").value("Update category"));
+        .andExpect(xpath("//tr[1]/td[3]").string("1"))
+        .andExpect(xpath("//tr[2]/td[3]").string("Update category"));
   }
 
   @Test
@@ -111,18 +118,18 @@ public class ControllerTests {
     createNewCategory("New category");
 
     deleteCategory(1)
-        .andExpect(status().isOk());
+        .andExpect(status().is3xxRedirection());
   }
 
   @Test
   @DisplayName("DELETE request for category returned status code 404 and correct validation message")
   public void category_failDeleteByNonExistingId() throws Exception {
     deleteCategory(1)
-        .andExpect(status().isNotFound())
-        .andExpect(jsonPath("$.message").value("The record doesn't exist"))
-        .andExpect(jsonPath("$.errors.[0]").value("Category with id: 1 - Not Found"));
+        .andExpect(status().isOk())
+        .andExpect(xpath("//body/div[3]/h2").string("Category with id: 1 - Not Found"));
   }
 
+  /*
   @Test
   @DisplayName("GET all questions request returned status code 200")
   public void question_successGetAllRecords() throws Exception {
@@ -351,36 +358,35 @@ public class ControllerTests {
         .andExpect(status().isNotFound())
         .andExpect(jsonPath("$.message").value("The record doesn't exist"))
         .andExpect(jsonPath("$.errors.[0]").value("Answer with id: 1 - Not Found"));
-  }
+  }*/
 
   public ResultActions getCategory() throws Exception {
-    return mockMvc.perform(get("/category"));
+    return mockMvc.perform(get("/admin/category"));
   }
 
   public ResultActions getCategory(int id) throws Exception {
-    return mockMvc.perform(get("/category/{id}", id));
+    return mockMvc.perform(get("/admin/category/{id}", id));
   }
 
   public ResultActions createNewCategory(String title) throws Exception {
     category.setTitle(title);
 
-    return mockMvc.perform(put("/category")
-        .contentType("application/json")
-        .content(objectMapper.writeValueAsString(category)));
+    return mockMvc.perform(putForm("/admin/category/create", category));
   }
 
   public ResultActions updateCategory(String title, int id) throws Exception {
     category.setTitle(title);
+    String updateUrl = String.format("/admin/category/%s/update", id);
 
-    return mockMvc.perform(post("/category/{id}", id)
-        .contentType("application/json")
-        .content(objectMapper.writeValueAsString(category)));
+    return mockMvc.perform(postForm(updateUrl, category));
+
   }
 
   public ResultActions deleteCategory(int id) throws Exception {
-    return mockMvc.perform(delete("/category/{id}", id));
+    return mockMvc.perform(delete("/admin/category/{id}/delete", id));
   }
 
+/*
   public ResultActions getQuestion() throws Exception {
     return mockMvc.perform(get("/question"));
   }
@@ -439,5 +445,6 @@ public class ControllerTests {
   public ResultActions deleteAnswer(int id) throws Exception {
     return mockMvc.perform(delete("/answer/{id}", id));
   }
+*/
 
 }
