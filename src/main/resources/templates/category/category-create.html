@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Category creating</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="header">
+  <h1>Administration part</h1>
+</div>
+<div class="sidebar">
+  <a th:href="@{/admin}">Home</a>
+  <a class="active" th:href="@{/admin/category}">Category list</a>
+  <a th:href="@{/question}">Question list</a>
+  <a th:href="@{/answer}">Answer list</a>
+</div>
+<div class="content">
+  <h2>Category creating</h2>
+  <form th:action="@{/admin/category/create}" th:object="${category}" th:method="PUT">
+    <table border="0">
+      <tr>
+        <td>Title</td>
+        <td>:</td>
+        <td>
+          <input type="text" th:field="*{title}" placeholder="Enter category title"/>
+        </td>
+      </tr>
+    </table>
+    <br th:if="not ${errorMessage}">
+    <p th:if="${errorMessage}" th:utext="${errorMessage}" class="error"></p>
+    <button type="submit" class="Accept">Create</button>
+  </form>
+</div>
+</body>
+</html>

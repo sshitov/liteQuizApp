@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Category editing</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="header">
+  <h1>Administration part</h1>
+</div>
+<div class="sidebar">
+  <a th:href="@{/admin}">Home</a>
+  <a class="active" th:href="@{/admin/category}">Category list</a>
+  <a th:href="@{/question}">Question list</a>
+  <a th:href="@{/answer}">Answer list</a>
+</div>
+<div class="content">
+  <div th:if="${category}">
+    <h2>Category editing</h2>
+    <form th:action="@{/admin/category/{id}/update(id=${category.id})}" th:object="${category}" method="POST">
+      <table border="0">
+        <tr>
+          <td>ID</td>
+          <td>:</td>
+          <td th:utext="${category.id}">...</td>
+        </tr>
+        <tr>
+          <td>Title</td>
+          <td>:</td>
+          <td><input type="text" th:field="*{title}" placeholder="Enter category title"/></td>
+        </tr>
+      </table>
+      <br th:if="not ${errorMessage}">
+      <p th:if="${errorMessage}" th:utext="${errorMessage}" class="error"></p>
+      <button type="submit" class="Accept">Update</button>
+    </form>
+  </div>
+  <div th:if="not ${category}">
+    <h2 th:if="${errorMessage}" th:utext="${errorMessage}" class="error"></h2>
+  </div>
+</div>
+</body>
+</html>

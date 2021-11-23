@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Questions</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="header">
+  <h1>Administration part</h1>
+</div>
+<div class="sidebar">
+  <a th:href="@{/admin}">Home</a>
+  <a th:href="@{/category}">Category list</a>
+  <a th:href="@{/question}">Question list</a>
+  <a class="active" th:href="@{/answer}">Answer list</a>
+</div>
+<div class="content">
+  <h2>Answers</h2>
+  <br/>
+  <div>
+    <a class="buttonCreate" th:href="@{/answer/add}">Create answer</a>
+  </div>
+  <br/><br/>
+  <div>
+    <table border="1">
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Question ID</th>
+        <th>Is right</th>
+        <th colspan="2">Action</th>
+      </tr>
+      <tr th:each ="answer : ${answer}">
+        <td th:utext="${answer.id}">...</td>
+        <td th:utext="${answer.title}">...</td>
+        <td th:utext="${answer.questionId}">...</td>
+        <td th:utext="${answer.isRight}">...</td>
+        <td><a th:href="@{/answer/{Id}/edit(answerId=${answer.id})}">View</a></td>
+        <td><a th:href="@{/answer/{Id}/edit(answerId=$answer.id})}">Edit</a></td>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>

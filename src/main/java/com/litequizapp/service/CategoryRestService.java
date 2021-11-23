@@ -30,18 +30,16 @@ public class CategoryRestService {
     return categories;
   }
 
-  public CategoryDTO createCategory(CategoryDTO categoryDTO) {
+  public void createCategory(CategoryDTO categoryDTO) {
     CategoryEntity categoryEntity = new CategoryEntity(categoryDTO.getTitle());
     categoryRepository.save(categoryEntity);
-    return categoryDTO;
   }
 
-  public CategoryDTO updateCategory(long id, CategoryDTO categoryDTO) {
+  public void updateCategory(long id, CategoryDTO categoryDTO) {
     CategoryEntity category = categoryRepository.findById(id)
         .orElseThrow(() -> new ElementNotFoundException("Category with id: "+id+" - Not Found"));
     category.setTitle(categoryDTO.getTitle());
     categoryRepository.save(category);
-    return categoryDTO;
   }
 
   public void deleteCategory(long id) {

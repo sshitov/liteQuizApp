@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <meta charset="UTF-8">
+  <title th:utext="liteQuizApp"></title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="img_wrap">
+<img th:src="@{/img/main-background-image.jpg}" alt="main-image" src=""/>
+  <div class="main">
+  <a class="buttonStart" th:href="@{/}">Start quiz</a>
+  </div>
+  <a class="buttonAdmin" th:href="@{/admin}">Admin</a>
+</div>
+</body>
+</html>

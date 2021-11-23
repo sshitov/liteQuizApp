@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Categories</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="header">
+  <h1>Administration part</h1>
+</div>
+<div class="sidebar">
+  <a th:href="@{/admin}">Home</a>
+  <a class="active" th:href="@{/admin/category}">Category list</a>
+  <a th:href="@{/question}">Question list</a>
+  <a th:href="@{/answer}">Answer list</a>
+</div>
+<div class="content">
+  <h2>Categories</h2>
+  <br/>
+  <div>
+    <a class="buttonCreate" th:href="@{/admin/category/create}">Create category</a>
+  </div>
+  <br/><br/>
+  <div>
+    <table border="1">
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th colspan="2">Action</th>
+      </tr>
+      <tr th:each="category : ${category}">
+        <td th:utext="${category.id}">...</td>
+        <td th:utext="${category.title}">...</td>
+        <td><a th:href="@{/admin/category/{id}(id=${category.id})}">View</a></td>
+        <td><a th:href="@{/admin/category/{id}/update(id=${category.id})}">Edit</a></td>
+      </tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>
