@@ -436,7 +436,6 @@ public class ControllerTests {
     return mockMvc.perform(postForm(updateUrl, answer));
   }
 
-
   public ResultActions deleteAnswer(int id) throws Exception {
     return mockMvc.perform(delete("/admin/answer/{id}/delete", id));
   }
