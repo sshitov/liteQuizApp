@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class QuestionRestService {
+public class QuestionService {
 
   private final QuestionRepository questionRepository;
   private final CategoryRepository categoryRepository;
@@ -33,15 +33,14 @@ public class QuestionRestService {
     return questions;
   }
 
-  public QuestionDTO createQuestion(QuestionDTO questionDto) {
+  public void createQuestion(QuestionDTO questionDto) {
     CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId())
         .orElseThrow(() -> new ElementNotFoundException("Category with id: " + questionDto.getCategoryId() + " - Not Found"));
     QuestionEntity questionEntity = new QuestionEntity(questionDto.getTitle(), categoryId);
     questionRepository.save(questionEntity);
-    return questionDto;
   }
 
-  public QuestionDTO updateQuestion(long id, QuestionDTO questionDto) {
+  public void updateQuestion(long id, QuestionDTO questionDto) {
     QuestionEntity question = questionRepository.findById(id)
         .orElseThrow(() -> new ElementNotFoundException("Question with id: " + id + " - Not Found"));
     CategoryEntity categoryId = categoryRepository.findById(questionDto.getCategoryId())
@@ -49,7 +48,6 @@ public class QuestionRestService {
     question.setTitle(questionDto.getTitle());
     question.setCategory(categoryId);
     questionRepository.save(question);
-    return questionDto;
   }
 
   public void deleteQuestion(long id) {

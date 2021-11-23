@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AnswerRestService {
+public class AnswerService {
 
   private final AnswerRepository answerRepository;
   private final QuestionRepository questionRepository;
@@ -33,16 +33,15 @@ public class AnswerRestService {
     return answers;
   }
 
-  public AnswerDTO createAnswer(AnswerDTO answerDTO) {
+  public void createAnswer(AnswerDTO answerDTO) {
     QuestionEntity questionId = questionRepository.findById(answerDTO.getQuestionId())
         .orElseThrow(
             () -> new ElementNotFoundException("Question with id: " + answerDTO.getQuestionId() + " - Not Found"));
     AnswerEntity answerEntity = new AnswerEntity(answerDTO.getTitle(), answerDTO.getIsRight(), questionId);
     answerRepository.save(answerEntity);
-    return answerDTO;
   }
 
-  public AnswerDTO updateAnswer(long id, AnswerDTO answerDTO) {
+  public void updateAnswer(long id, AnswerDTO answerDTO) {
     AnswerEntity answer = answerRepository.findById(id)
         .orElseThrow(() -> new ElementNotFoundException("Answer with id: " + id + " - Not Found"));
     QuestionEntity questionId = questionRepository.findById(answerDTO.getQuestionId())
@@ -52,7 +51,6 @@ public class AnswerRestService {
     answer.setIsRight(answerDTO.getIsRight());
     answer.setQuestion(questionId);
     answerRepository.save(answer);
-    return answerDTO;
   }
 
   public void deleteAnswer(long id) {

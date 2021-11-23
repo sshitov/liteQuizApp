@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
-  <title>Questions</title>
+  <meta charset="UTF-8"/>
+  <title>Answers</title>
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -11,33 +11,36 @@
 </div>
 <div class="sidebar">
   <a th:href="@{/admin}">Home</a>
-  <a th:href="@{/category}">Category list</a>
-  <a th:href="@{/question}">Question list</a>
-  <a class="active" th:href="@{/answer}">Answer list</a>
+  <a th:href="@{/admin/category}">Category list</a>
+  <a th:href="@{/admin/question}">Question list</a>
+  <a class="active" th:href="@{/admin/answer}">Answer list</a>
 </div>
 <div class="content">
   <h2>Answers</h2>
   <br/>
   <div>
-    <a class="buttonCreate" th:href="@{/answer/add}">Create answer</a>
+    <a class="buttonCreate" th:href="@{/admin/answer/create}">Create answer</a>
   </div>
   <br/><br/>
   <div>
     <table border="1">
       <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Question ID</th>
-        <th>Is right</th>
-        <th colspan="2">Action</th>
+        <th rowspan="2">ID</th>
+        <th rowspan="2">Title</th>
+        <th colspan="2">Linked question</th>
+        <th rowspan="2">Is Right</th>
+        <th rowspan="2" colspan="2">Action</th>
       </tr>
-      <tr th:each ="answer : ${answer}">
+      <th>ID</th>
+      <th>Title</th>
+      <tr th:each="answer : ${answer}">
         <td th:utext="${answer.id}">...</td>
         <td th:utext="${answer.title}">...</td>
-        <td th:utext="${answer.questionId}">...</td>
+        <td th:utext="${answer.question.id}">...</td>
+        <td th:utext="${answer.question.title}">...</td>
         <td th:utext="${answer.isRight}">...</td>
-        <td><a th:href="@{/answer/{Id}/edit(answerId=${answer.id})}">View</a></td>
-        <td><a th:href="@{/answer/{Id}/edit(answerId=$answer.id})}">Edit</a></td>
+        <td><a th:href="@{/admin/answer/{id}(id=${answer.id})}">View</a></td>
+        <td><a th:href="@{/admin/answer/{id}/update(id=${answer.id})}">Edit</a></td>
       </tr>
     </table>
   </div>

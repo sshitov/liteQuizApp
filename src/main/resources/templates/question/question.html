@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <title>View question</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="header">
+  <h1>Administration part</h1>
+</div>
+<div class="sidebar">
+  <a th:href="@{/admin}">Home</a>
+  <a th:href="@{/admin/category}">Category list</a>
+  <a class="active" th:href="@{/admin/question}">Question list</a>
+  <a th:href="@{/admin/answer}">Answer list</a>
+</div>
+<div class="content">
+  <div th:if="${question}">
+    <h2>Question detail</h2>
+    <table border="0">
+      <tr>
+        <td>ID</td>
+        <td>:</td>
+        <td th:utext="${question.id}">...</td>
+      </tr>
+      <tr>
+        <td>Title</td>
+        <td>:</td>
+        <td th:utext="${question.title}">...</td>
+      </tr>
+      <tr>
+        <td>Linked category</td>
+        <td>:</td>
+        <td th:utext="${question.category.id}">...</td>
+      </tr>
+    </table>
+    <br/><br/>
+    <div th:if="not ${allowDelete}">
+      <a class="buttonCreate" th:href="@{/admin/question/{id}/update(id=${question.id})}">Edit</a>
+      <a class="buttonDelete" th:href="@{/admin/question/{id}/delete(id=${question.id})}">Delete</a>
+    </div>
+    <div>
+      <form th:if="${allowDelete}" th:action="@{/admin/question/{id}/delete(id=${question.id})}" th:method="DELETE">
+        Delete this question?
+        <button type="submit" class="Accept">Yes</button>
+        <a class="buttonDecline" th:href="@{/admin/question/{id}(id=${question.id})}">No</a>
+      </form>
+    </div>
+  </div>
+  <h2 th:if="${errorMessage}" th:utext="${errorMessage}" class="error"></h2>
+</div>
+</body>
+</html>

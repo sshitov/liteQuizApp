@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CategoryRestService {
+public class CategoryService {
 
   private final CategoryRepository categoryRepository;
 
