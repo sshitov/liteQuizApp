@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 <head>
   <meta charset="UTF-8"/>
-  <title>Category editing</title>
+  <title>Question editing</title>
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -11,24 +11,29 @@
 </div>
 <div class="sidebar">
   <a th:href="@{/admin}">Home</a>
-  <a class="active" th:href="@{/admin/category}">Category list</a>
-  <a th:href="@{/admin/question}">Question list</a>
+  <a th:href="@{/admin/category}">Category list</a>
+  <a class="active" th:href="@{/admin/question}">Question list</a>
   <a th:href="@{/admin/answer}">Answer list</a>
 </div>
 <div class="content">
-  <div th:if="${category}">
-    <h2>Category editing</h2>
-    <form th:action="@{/admin/category/{id}/update(id=${category.id})}" th:object="${category}" method="POST">
+  <div th:if="${question}">
+    <h2>Question editing</h2>
+    <form th:action="@{/admin/question/{id}/update(id=${question.id})}" th:object="${question}" method="POST">
       <table border="0">
         <tr>
           <td>ID</td>
           <td>:</td>
-          <td th:utext="${category.id}">...</td>
+          <td th:utext="${question.id}">...</td>
         </tr>
         <tr>
           <td>Title</td>
           <td>:</td>
-          <td><input type="text" th:field="*{title}" placeholder="Enter category title"/></td>
+          <td><input type="text" th:field="*{title}" placeholder="Enter question title"/></td>
+        </tr>
+        <tr>
+          <td>Linked category</td>
+          <td>:</td>
+          <td><input type="text" th:field="*{categoryId}" placeholder="Enter linked category id"/></td>
         </tr>
       </table>
       <br th:if="not ${errorMessage}">
@@ -36,7 +41,7 @@
       <button type="submit" class="Accept">Update</button>
     </form>
   </div>
-  <div th:if="not ${category}">
+  <div th:if="not ${question}">
     <h2 th:if="${errorMessage}" th:utext="${errorMessage}" class="error"></h2>
   </div>
 </div>

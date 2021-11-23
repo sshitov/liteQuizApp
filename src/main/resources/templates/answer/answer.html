@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <title>View answer</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="header">
+  <h1>Administration part</h1>
+</div>
+<div class="sidebar">
+  <a th:href="@{/admin}">Home</a>
+  <a th:href="@{/admin/category}">Category list</a>
+  <a th:href="@{/admin/question}">Question list</a>
+  <a class="active" th:href="@{/admin/answer}">Answer list</a>
+</div>
+<div class="content">
+  <div th:if="${answer}">
+    <h2>Question detail</h2>
+    <table border="0">
+      <tr>
+        <td>ID</td>
+        <td>:</td>
+        <td th:utext="${answer.id}">...</td>
+      </tr>
+      <tr>
+        <td>Title</td>
+        <td>:</td>
+        <td th:utext="${answer.title}">...</td>
+      </tr>
+      <tr>
+        <td>Linked question</td>
+        <td>:</td>
+        <td th:utext="${answer.question.id}">...</td>
+      </tr>
+      <tr>
+        <td>Is right answer</td>
+        <td>:</td>
+        <td th:utext="${answer.isRight}">...</td>
+      </tr>
+    </table>
+    <br/><br/>
+    <div th:if="not ${allowDelete}">
+      <a class="buttonCreate" th:href="@{/admin/answer/{id}/update(id=${answer.id})}">Edit</a>
+      <a class="buttonDelete" th:href="@{/admin/answer/{id}/delete(id=${answer.id})}">Delete</a>
+    </div>
+    <div>
+      <form th:if="${allowDelete}" th:action="@{/admin/answer/{id}/delete(id=${answer.id})}" th:method="DELETE">
+        Delete this answer?
+        <button type="submit" class="Accept">Yes</button>
+        <a class="buttonDecline" th:href="@{/admin/answer/{id}(id=${answer.id})}">No</a>
+      </form>
+    </div>
+  </div>
+  <h2 th:if="${errorMessage}" th:utext="${errorMessage}" class="error"></h2>
+</div>
+</body>
+</html>

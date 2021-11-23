@@ -3,7 +3,7 @@ package com.litequizapp.controller;
 import com.litequizapp.dto.CategoryDTO;
 import com.litequizapp.entity.CategoryEntity;
 import com.litequizapp.exception.ElementNotFoundException;
-import com.litequizapp.service.CategoryRestService;
+import com.litequizapp.service.CategoryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin/category")
 @RequiredArgsConstructor
-public class CategoryRestController {
+public class CategoryController {
 
-  private final CategoryRestService restService;
+  private final CategoryService restService;
 
   @GetMapping
   public String getAllCategories(Model model) {
@@ -63,7 +63,7 @@ public class CategoryRestController {
 
   @GetMapping(value = "/create")
   public String showCreateCategory(Model model) {
-    CategoryEntity category = new CategoryEntity();
+    CategoryDTO category = new CategoryDTO();
     model.addAttribute("category", category);
     return "category/category-create";
   }
@@ -87,9 +87,10 @@ public class CategoryRestController {
   @GetMapping(value = "/{id}/update")
   public String showUpdateCategory(Model model, @PathVariable String id) {
     long categoryId = Long.parseLong(id);
-    CategoryEntity category = null;
+    CategoryDTO category = null;
     try {
-      category = restService.getCategoryById(categoryId);
+      CategoryEntity  categoryEntity = restService.getCategoryById(categoryId);
+      category = new CategoryDTO(categoryId, categoryEntity.getTitle());
     } catch (ElementNotFoundException ex) {
       model.addAttribute("errorMessage", ex.getMessage());
     }

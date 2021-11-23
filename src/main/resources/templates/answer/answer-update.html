@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Answer editing</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="header">
+  <h1>Administration part</h1>
+</div>
+<div class="sidebar">
+  <a th:href="@{/admin}">Home</a>
+  <a th:href="@{/admin/category}">Category list</a>
+  <a th:href="@{/admin/question}">Question list</a>
+  <a class="active" th:href="@{/admin/answer}">Answer list</a>
+</div>
+<div class="content">
+  <div th:if="${answer}">
+    <h2>Answer editing</h2>
+    <form th:action="@{/admin/answer/{id}/update(id=${answer.id})}" th:object="${answer}" method="POST">
+      <table border="0">
+        <tr>
+          <td>ID</td>
+          <td>:</td>
+          <td th:utext="${answer.id}">...</td>
+        </tr>
+        <tr>
+          <td>Title</td>
+          <td>:</td>
+          <td><input type="text" th:field="*{title}" placeholder="Enter answer title"/></td>
+        </tr>
+        <tr>
+          <td>Linked question</td>
+          <td>:</td>
+          <td><input type="text" th:field="*{questionId}" placeholder="Enter linked question id"/></td>
+        </tr>
+        <tr>
+          <td>Is right answer</td>
+          <td>:</td>
+          <td>
+            <input type="radio" th:field="*{isRight}" th:value="true" th:text="Yes"/>
+            <input type="radio" th:field="*{isRight}" th:value="false" th:text="No"/>
+          </td>
+        </tr>
+      </table>
+      <br th:if="not ${errorMessage}">
+      <p th:if="${errorMessage}" th:utext="${errorMessage}" class="error"></p>
+      <button type="submit" class="Accept">Update</button>
+    </form>
+  </div>
+  <div th:if="not ${answer}">
+    <h2 th:if="${errorMessage}" th:utext="${errorMessage}" class="error"></h2>
+  </div>
+</div>
+</body>
+</html>

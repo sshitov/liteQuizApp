@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 <head>
   <meta charset="UTF-8"/>
-  <title>Category creating</title>
+  <title>Question creating</title>
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
@@ -11,19 +11,26 @@
 </div>
 <div class="sidebar">
   <a th:href="@{/admin}">Home</a>
-  <a class="active" th:href="@{/admin/category}">Category list</a>
-  <a th:href="@{/admin/question}">Question list</a>
+  <a th:href="@{/admin/category}">Category list</a>
+  <a class="active" th:href="@{/admin/question}">Question list</a>
   <a th:href="@{/admin/answer}">Answer list</a>
 </div>
 <div class="content">
-  <h2>Category creating</h2>
-  <form th:action="@{/admin/category/create}" th:object="${category}" th:method="PUT">
+  <h2>Question creating</h2>
+  <form th:action="@{/admin/question/create}" th:object="${question}" th:method="PUT">
     <table border="0">
       <tr>
         <td>Title</td>
         <td>:</td>
         <td>
-          <input type="text" th:field="*{title}" placeholder="Enter category title"/>
+          <input type="text" th:field="*{title}" placeholder="Enter question title"/>
+        </td>
+      </tr>
+      <tr>
+        <td>Linked Category</td>
+        <td>:</td>
+        <td>
+          <input type="text" th:field="*{categoryId}" placeholder="Enter linked category id"/>
         </td>
       </tr>
     </table>

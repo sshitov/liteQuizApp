@@ -86,7 +86,7 @@ public class DTOValidationTests {
     assertEquals(1, violations.size(), "should be 1 exception");
 
     violations.forEach(e -> validationErrors.add(e.getMessage()));
-    assertTrue(validationErrors.contains("related entry id can't be empty"), "Error message isn't correct");
+    assertTrue(validationErrors.contains("Related entry id can't be empty"), "Error message isn't correct");
   }
 
   @Test
@@ -107,7 +107,7 @@ public class DTOValidationTests {
     assertEquals(1, violations.size(), "should be 1 exception");
 
     violations.forEach(e -> validationErrors.add(e.getMessage()));
-    assertTrue(validationErrors.contains("related entry id can't be empty"), "Error message isn't correct");
+    assertTrue(validationErrors.contains("Related entry id can't be empty"), "Error message isn't correct");
   }
 
   public CategoryDTO createCategoryDTO(String title) {
