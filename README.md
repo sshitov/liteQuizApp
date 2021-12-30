@@ -2,7 +2,7 @@
 - [x] Write placeholder app
 - [x] Decide if it is todo or quiz
 - [x] Add trello board with tasks
-- [ ] Plan a couple of iterations
+- [x] Plan a couple of iterations
 
 
 ## Basic description of the app
@@ -13,5 +13,5 @@ Only administrators are supposed to create categories and questions.
 
 Technology stack:
 - Backend: Java 1.8 using Spring Boot
-- Frontend: React
+- Frontend: Thymeleaf, HTML, CSS
 - DataBase: PostgreSQL
